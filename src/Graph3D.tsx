@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import ForceGraph3D from '3d-force-graph';
+import ForceGraph3D, { type ForceGraph3DInstance } from '3d-force-graph';
 import * as THREE from 'three';
 import rawData from './data/result.json';
 
@@ -59,7 +59,7 @@ const BG_COLOR = '#080b12';
 
 export default function Graph3D() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const graphRef = useRef<ReturnType<typeof ForceGraph3D> | null>(null);
+  const graphRef = useRef<ForceGraph3DInstance | null>(null);
   const [hovered, setHovered] = useState<HoveredInfo | null>(null);
   const [selected, setSelected] = useState<PackageNode | null>(null);
 
@@ -95,7 +95,7 @@ export default function Graph3D() {
 
     const el = mountRef.current;
 
-    const graph = ForceGraph3D({ antialias: true })(el)
+    const graph = new ForceGraph3D(el, { rendererConfig: { antialias: true } })
       .graphData({ nodes, links })
       .backgroundColor(BG_COLOR)
       .linkColor(() => 'rgba(100,160,255,0.18)')
